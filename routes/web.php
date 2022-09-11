@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $category = \App\Models\Category::all();
+    $category = Category::all();
     dump($category);
     return view('welcome');
 });
@@ -31,7 +34,8 @@ Route::get('/',[App\Http\Controllers\Admin\MyController::class,'index']);
 //Route::resource('categories',CategoryController::class)->except(['show']);  //except удаление метода
 Route::resources([
     'categories' => CategoryController::class,
-    'products' => \App\Http\Controllers\Admin\ProductController::class
+    'products' => ProductController::class,
+    'articles' => ArticleController::class
 ]);
 
 
