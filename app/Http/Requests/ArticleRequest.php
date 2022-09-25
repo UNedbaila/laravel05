@@ -26,7 +26,7 @@ class ArticleRequest extends FormRequest
         return [
             'name' => 'required|min:5|max:255',
             'content' => 'required|min:50',
-            'image' => 'file|size:2, mimes:jpg,jpeg,png'
+            'image' => 'file|size:512, mimes:jpg,jpeg,png'
         ];
     }
     public function messages()
@@ -36,7 +36,7 @@ class ArticleRequest extends FormRequest
             'name.max' => 'Название :attribute не должно быть длиннее :max символов',
             'name.required' => 'Обязательное поле для заполнения',
             'content.min' => 'Текст статьи не должнен быть меньше :min символов',
-            'image.file' => 'Размер :attribute не должнен быть более 2-х Мегабайт',
+            'image.file' => 'Размер :attribute не должнен быть более 512 килобайт',
             'image.mimes' => 'Неверный формат :attribute (допустимый формат файла: *.jpg, *.jpeg, *.png)'
         ];
     }

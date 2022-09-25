@@ -42,6 +42,7 @@ class CategoryController extends Controller
     {
 //        $valideted = $request->validate(['name' => 'required|min:3|max:20']);
 //        dd($valideted);
+        //$validated = $request->validated();
 
        // Validator::make($request->all(),['name' => 'required|min:3']); // класс для валидации данных
         Category::created($request->all());
