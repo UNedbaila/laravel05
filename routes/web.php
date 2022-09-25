@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\SiteController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,12 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('/', SiteController::class);
 
+Route::get('/catalog', CatalogController::class);
+
 Route::get('/any_file', function (){
     return Storage::download('1.txt');
 });
+
 
 Auth::routes();
 
