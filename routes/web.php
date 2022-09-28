@@ -34,6 +34,8 @@ Route::get('/test', function(){
     dd($category->products()->where('active', 1));
      });
 
+Route::get('catalog/{category_id}/{product_id}',[CatalogController::class,'product'])->name('site.product');
+
 
 
 

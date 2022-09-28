@@ -18,4 +18,12 @@ class CatalogController extends Controller
         $categories = Category::withCount('products')->get();
         return view('site.store', compact('products','categories'));
     }
+
+    public function product(Request $request, $category_id, $product_id){
+
+        $category = Product::find($category_id);
+        $product = Product::find($product_id);
+
+        return view("site.product", compact("category", "product"));
+    }
 }
