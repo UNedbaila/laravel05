@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\SiteController;
 use App\Models\Category;
@@ -21,8 +22,22 @@ use Illuminate\Support\Facades\Storage;
 */
 
 Route::get('/', SiteController::class);
-
 Route::get('/catalog', CatalogController::class);
+
+Route::get('/cart',[ CartController::class, 'getCart']);
+Route::get('/add_to_cart', [CartController::class, 'addToCart']);
+Route::get('/test', function(){
+    //$product = Product::inRandomOrder()->first();
+    //$category = Category::findOrFail($product->category_id);
+    //$category = Category::inRandomOrder()->first();
+    $category = Category::find(1);
+    dd($category->products()->where('active', 1));
+     });
+
+
+
+
+
 
 Route::get('/any_file', function (){
     return Storage::download('1.txt');

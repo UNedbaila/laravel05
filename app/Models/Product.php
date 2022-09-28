@@ -28,6 +28,12 @@ class Product extends Model
         return 'https://instapik.ru/wp-content/uploads/2020/10/favicon-2.png';
     }
 
+    public function setImageAttribute($value){
+        $this->attributes['image'] = Str::lower($value);
+    }
 
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 
 }

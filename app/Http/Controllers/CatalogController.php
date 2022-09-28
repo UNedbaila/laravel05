@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class CatalogController extends Controller
             //->first()
             ->get();
 
-        return view('site.store', compact('products'));
+        $categories = Category::withCount('products')->get();
+        return view('site.store', compact('products','categories'));
     }
 }
