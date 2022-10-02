@@ -30,8 +30,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::create($request->all());
-        return response($request->all());
+        $category = Category::create($request->all());
+        return new CategoryResource($category);
     }
 
     /**
@@ -54,8 +54,8 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->toArray());
-        return response(new CategoryRequest($request->toArray()));
+        $category->fill($request->all())->save();
+        return new CategoryResource($category);
     }
 
     /**
