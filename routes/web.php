@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\SiteController;
-use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\MyController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ArticleController;
 use Illuminate\Support\Facades\Storage;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,56 +26,34 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('/', SiteController::class);
 Route::get('/catalog', CatalogController::class);
-
-Route::get('/cart',[ CartController::class, 'getCart']);
-Route::get('/add_to_cart', [CartController::class, 'addToCart']);
-Route::get('/test', function(){
-    //$product = Product::inRandomOrder()->first();
-    //$category = Category::findOrFail($product->category_id);
-    //$category = Category::inRandomOrder()->first();
-    $category = Category::find(1);
-    dd($category->products()->where('active', 1));
-     });
-
 Route::get('catalog/{category_id}/{product_id}',[CatalogController::class,'product'])->name('site.product');
+Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
+Route::post('/add_to_cart', [CartController::class, 'addToCart'])->name('add_to_cart');
+Route::post('/test', function (Request $request){
 
+    $data = $request->all();
+    return response()->json($data)->setStatusCode(401);
 
-
-
-
-
-Route::get('/any_file', function (){
-    return Storage::download('1.txt');
 });
+
+Route::get('/store', [SiteController::class, 'store']);
+
+
 
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class,'index'])->name('home');
 
-Route::middleware('auth')->prefix('admin')->group(function(){
-
-
-Route::get('/',[App\Http\Controllers\Admin\MyController::class,'index']);
-//Route::resource('categories',CategoryController::class)->except(['show']);  //except удаление метода
-Route::resources([
-    'categories' => CategoryController::class,
-    'products' => ProductController::class,
-    'articles' => ArticleController::class
-]);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-//Route::get('/categories',[CategoryController::class, 'index'])
-//    ->name('categories.index');
-//Route::get('/categories/create',[CategoryController::class, 'create'])
-//    ->name('categories.create');
-//Route::post('/categories/create',[CategoryController::class, 'store'])
-//    ->name('categories.store');
-//Route::get('/categories/{category}/edit',[CategoryController::class, 'edit'])
-//    ->name('categories.edit');
-//Route::put('/categories/{category}/update',[CategoryController::class, 'update'])
-//    ->name('categories.update');
-//Route::delete('/categories/{category}/delete',[CategoryController::class, 'delete'])
-//    ->name('categories.delete');
+Route::middleware('auth')->prefix('admin')->group(callback: function(){
 
+    Route::get('/', [MyController::class, 'index'])->name('')->withoutMiddleware('auth');
+
+    Route::resources([
+        'categories' => CategoryController::class,
+        'products' => ProductController::class,
+        'articles' => ArticleController::class,
+    ]);
 });
