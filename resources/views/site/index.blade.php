@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="product-body">
                                         <p class="product-category">Category</p>
-                                        <h3 class="product-name"><a href="#">{{ $product->name }}</a></h3>
+                                        <h3 class="product-name"><a href="{{route('site.product',["category_id"=>$product->category_id,"product_id"=>$product->id])}}">{{ $product->name }}</a></h3>
                                         <h4 class="product-price">${{$product->price/100}}</h4>
                                         <div class="product-rating">
                                             <i class="fa fa-star"></i>
