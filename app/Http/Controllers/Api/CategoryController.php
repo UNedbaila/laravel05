@@ -14,12 +14,14 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return CategoryCollection
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $categories = Category::paginate(10);
-        return new CategoryCollection($categories);
+        return response()
+        ->json(new CategoryCollection($categories))
+            ->setStatus(200);
     }
 
     /**
@@ -30,15 +32,15 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::create($request->all());
-        return response($request->all());
+        $category = Category::create($request->all());
+        return new CategoryResource($category);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Category  $category
-     * @return CategoryResource
+     * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
     {
@@ -54,8 +56,8 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->toArray());
-        return response(new CategoryRequest($request->toArray()));
+        $category->fill($request->all())->save();
+        return new CategoryResource($category);
     }
 
     /**
@@ -67,6 +69,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response('deleted', 204);
+        return response('deleted');
     }
 }
