@@ -14,12 +14,14 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return CategoryCollection
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $categories = Category::paginate(10);
-        return new CategoryCollection($categories);
+        return response()
+        ->json(new CategoryCollection($categories))
+            ->setStatus(200);
     }
 
     /**
@@ -38,7 +40,7 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Category  $category
-     * @return CategoryResource
+     * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
     {
@@ -67,6 +69,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response('deleted', 204);
+        return response('deleted');
     }
 }
