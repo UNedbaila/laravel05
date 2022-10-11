@@ -24,6 +24,7 @@
             <h3>{{ $data['Writer'] }}</h3>
             <h3>{{ $data['Actors'] }}</h3>
             <h3>{{ $data['Plot'] }}</h3>
+            <h3>{{ $data['Language'] }}</h3>
         @endforeach
     @endif
 </form>

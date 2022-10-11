@@ -96,9 +96,18 @@ Route::get('/evil', function (Request $request){
 
 Route::get('/mail', function (Request $request){
 
+//
+//    $job = new \App\Jobs\FirstJob('Volodija!!!');
+//    $job->dispatch('Volodija!!!');
+//    \App\Jobs\FirstJob::dispatch('Volodija!!!');
 
-    $mail = new FirstMail('Hello mail');
-    Mail::send($mail);
+//    \App\Jobs\FirstJob::dispatch('Volodija!!!') ->onQueue('2myEmails');
+//      \App\Jobs\FirstJob::dispatchAfterResponse('Volodija!!!'); //Задача отправлена после ответа пользователю
+
+     $mail = new FirstMail('Hi! JACK!');
+        Mail::send($mail);
+
+    //Mail::send($mail);
     //return view('mail', compact('mail'));
 });
 
