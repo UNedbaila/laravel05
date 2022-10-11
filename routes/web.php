@@ -3,9 +3,13 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\VtController;
+use App\Mail\FirstMail;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MyController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -31,13 +35,13 @@ Route::get('catalog/{category_id}/{product_id}', [CatalogController::class, 'pro
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
 Route::post('/add_to_cart', [CartController::class, 'addToCart'])->name('add_to_cart');
 
-Route::get('/convert', function (\Illuminate\Http\Request $request){
+Route::get('/convert', function (Request $request){
     $response = Http::get('https://www.nbrb.by/api/exrates/currencies');
     $currencies = $response->collect()->KeyBy('Cur_Abbreviation');
     return view('convert', compact('currencies'));
 });
 
-Route::post('/convert', function (\Illuminate\Http\Request $request){
+Route::post('/convert', function (Request $request){
     $query = [
         'periodicity' => 0
     ];
@@ -45,7 +49,7 @@ Route::post('/convert', function (\Illuminate\Http\Request $request){
     dd($response->collect()->KeyBy('Cur_Abbreviation'));
 });
 
-Route::get('/weather', function (\Illuminate\Http\Request $request){
+Route::get('/weather', function (Request $request){
     $query = [
         'key' => env('WEATHER_API_KEY'),
         'q' => 'Minsk',
@@ -60,7 +64,7 @@ Route::get('/weather', function (\Illuminate\Http\Request $request){
     //return view('weather', compact('response'));
 });
 
-Route::get('/gif', function (\Illuminate\Http\Request $request){
+Route::get('/gif', function (Request $request){
     $query = [
         'api_key' => env('GIPHY_API_KEY'),
         'limit' => '25',
@@ -76,7 +80,7 @@ Route::get('/gif', function (\Illuminate\Http\Request $request){
     //return view('weather', compact('response'));
 });
 
-Route::get('/evil', function (\Illuminate\Http\Request $request){
+Route::get('/evil', function (Request $request){
     $query = [
 
         'lang' => 'ru',
@@ -90,11 +94,11 @@ Route::get('/evil', function (\Illuminate\Http\Request $request){
     //return view('weather', compact('response'));
 });
 
-Route::get('/mail', function (\Illuminate\Http\Request $request){
+Route::get('/mail', function (Request $request){
 
 
-    $mail = new \App\Mail\FirstMail('Hello mail');
-    \Illuminate\Support\Facades\Mail::send($mail);
+    $mail = new FirstMail('Hello mail');
+    Mail::send($mail);
     //return view('mail', compact('mail'));
 });
 
@@ -107,7 +111,7 @@ Route::get('/test', function (Request $request) {
         'ondate' => '2016-7-1',
         'periodicity' => '1'
     ];
-    $client = new \GuzzleHttp\Client([
+    $client = new Client([
         'base_uri' => 'https://www.nbrb.by/api/'
     ]);
 //    $response = $client->get( 'exrates/rates/145', [
@@ -122,6 +126,23 @@ Route::get('/test', function (Request $request) {
 //    );
 //    dd(json_decode($response->getBody()->getContents(), true));
 });
+
+Route::get('/omdb', function (Request $request){
+
+    $query = [
+        'apikey' => env('OMDB_API_KEY'),
+        't' => 'Die Hard'
+
+    ];
+
+    $responce = Http::get('http://www.omdbapi.com/', $query);
+    $film = [$responce->json()];
+    //dd($film);
+    return view('omdb', compact('film'));
+
+});
+
+
 
 
 
