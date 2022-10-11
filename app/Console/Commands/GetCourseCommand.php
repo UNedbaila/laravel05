@@ -31,28 +31,41 @@ class GetCourseCommand extends Command
      */
     public function handle()
     {
-        $course = $this->argument('course');
 
+        $course = $this->argument('course');
         $curs_name = [];
         $value = [];
         $date = [];
 
-
         $responce = Http::get('https://www.nbrb.by/api/exrates/rates?periodicity=0');
         $currencies = $responce->json();
-
         foreach ($currencies as $curs) {
             $curs_name[] = $curs['Cur_Abbreviation'];
             $value[] = $curs['Cur_OfficialRate'];
             $date[] = $curs['Date'];
         }
 
-        $course = $this->ask('Введите код валюты (USD, EUR, PLN)');
+        if ($course) {
 
-        $key = array_search($course, $curs_name);
-        if (in_array($course, $curs_name)) {
-            $value = $value[$key];
-            $date = $date[$key];
+            //$course = $this->ask('Введите код валюты (USD, EUR, PLN)');
+
+            $key = array_search($course, $curs_name);
+            if (in_array($course, $curs_name)) {
+                $value = $value[$key];
+                $date = $date[$key];
+            }
+
+
+        } else {
+
+            $course = $this->ask('Введите код валюты (USD, EUR, PLN)');
+
+            $key = array_search($course, $curs_name);
+            if (in_array($course, $curs_name)) {
+                $value = $value[$key];
+                $date = $date[$key];
+            }
+
         }
 
         $this->info('Курс НБРБ ' . $value . ' ' . $course . ' ' . $date);
