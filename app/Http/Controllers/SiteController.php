@@ -14,8 +14,8 @@ class SiteController extends Controller
         $latestProducts = Product::query()
             ->where('active', 1)
             ->limit(10)
-            ->latest()
-            ->get();
+            ->latest();
+            //->get();
 //        $collection = collect([1,2,3]);
 //        $collection[] = 11;
 //        dump($collection);

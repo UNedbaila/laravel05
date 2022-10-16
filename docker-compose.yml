@@ -12,15 +12,18 @@ services:
             - php-fpm
             - mysql
     php-fpm:
+        container_name: php_laravel05
+        environment:
+            PHP_IDE_CONFIG: "serverName=laravel05"
         build:
-            dockerfile: docker/php/Dockerfile
-            context: .
+          dockerfile: docker/php/Dockerfile
+          context: .
         volumes:
             - ./:/var/www/html
         links:
             - mysql
     mysql:
-        #        container_name: laravel_db
+        container_name: laravel_db
         image: mariadb:10.3
         ports:
             - 3306:3306
