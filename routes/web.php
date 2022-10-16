@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VtController;
 use App\Mail\FirstMail;
@@ -34,6 +35,7 @@ Route::get('/catalog', CatalogController::class);
 Route::get('catalog/{category_id}/{product_id}', [CatalogController::class, 'product'])->name('site.product');
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
 Route::post('/add_to_cart', [CartController::class, 'addToCart'])->name('add_to_cart');
+Route::get('/info', InfoController::class);
 
 Route::get('/convert', function (Request $request){
     $response = Http::get('https://www.nbrb.by/api/exrates/currencies');
